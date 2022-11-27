@@ -42,6 +42,8 @@ type ConfigData struct {
 	APIBindPort int
 	// The API server external listen IP (which we will port forward)
 	APIServerAddress string
+	// Any additional Cert SANs that should be added to the kube api certificates
+	APIServerAdditionalCertSANs []string
 
 	// this should really be used for the --provider-id flag
 	// ideally cluster config should not depend on the node backend otherwise ...
@@ -190,7 +192,7 @@ controlPlaneEndpoint: "{{ .ControlPlaneEndpoint }}"
 # so we need to ensure the cert is valid for localhost so we can talk
 # to the cluster after rewriting the kubeconfig to point to localhost
 apiServer:
-  certSANs: [localhost, "{{.APIServerAddress}}"]
+  certSANs: [localhost, "{{.APIServerAddress}}"{{ range $index, $san := .APIServerAdditionalCertSANs }}, "{{ (StructuralData $san) }}"{{ end }}]
   extraArgs:
     "runtime-config": "{{ .RuntimeConfigString }}"
 {{ if .FeatureGates }}
@@ -226,7 +228,7 @@ metadata:
 # we use a well know token for TLS bootstrap
 bootstrapTokens:
 - token: "{{ .Token }}"
-# we use a well know port for making the API server discoverable inside docker network. 
+# we use a well know port for making the API server discoverable inside docker network.
 # from the host machine such port will be accessible via a random local port instead.
 localAPIEndpoint:
   advertiseAddress: "{{ .AdvertiseAddress }}"
@@ -327,7 +329,7 @@ controlPlaneEndpoint: "{{ .ControlPlaneEndpoint }}"
 # so we need to ensure the cert is valid for localhost so we can talk
 # to the cluster after rewriting the kubeconfig to point to localhost
 apiServer:
-  certSANs: [localhost, "{{.APIServerAddress}}"]
+  certSANs: [localhost, "{{.APIServerAddress}}"{{ range $index, $san := .APIServerAdditionalCertSANs }}, "{{ (StructuralData $san) }}"{{ end }}]
   extraArgs:
     "runtime-config": "{{ .RuntimeConfigString }}"
 {{ if .FeatureGates }}
@@ -363,7 +365,7 @@ metadata:
 # we use a well know token for TLS bootstrap
 bootstrapTokens:
 - token: "{{ .Token }}"
-# we use a well know port for making the API server discoverable inside docker network. 
+# we use a well know port for making the API server discoverable inside docker network.
 # from the host machine such port will be accessible via a random local port instead.
 localAPIEndpoint:
   advertiseAddress: "{{ .AdvertiseAddress }}"

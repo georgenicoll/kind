@@ -68,20 +68,21 @@ func (a *Action) Execute(ctx *actions.ActionContext) error {
 
 	provider := fmt.Sprintf("%s", ctx.Provider)
 	configData := kubeadm.ConfigData{
-		NodeProvider:         provider,
-		ClusterName:          ctx.Config.Name,
-		ControlPlaneEndpoint: controlPlaneEndpoint,
-		APIBindPort:          common.APIServerInternalPort,
-		APIServerAddress:     ctx.Config.Networking.APIServerAddress,
-		Token:                kubeadm.Token,
-		PodSubnet:            ctx.Config.Networking.PodSubnet,
-		KubeProxyMode:        string(ctx.Config.Networking.KubeProxyMode),
-		ServiceSubnet:        ctx.Config.Networking.ServiceSubnet,
-		ControlPlane:         true,
-		IPFamily:             ctx.Config.Networking.IPFamily,
-		FeatureGates:         ctx.Config.FeatureGates,
-		RuntimeConfig:        ctx.Config.RuntimeConfig,
-		RootlessProvider:     providerInfo.Rootless,
+		NodeProvider:                provider,
+		ClusterName:                 ctx.Config.Name,
+		ControlPlaneEndpoint:        controlPlaneEndpoint,
+		APIBindPort:                 common.APIServerInternalPort,
+		APIServerAddress:            ctx.Config.Networking.APIServerAddress,
+		APIServerAdditionalCertSANs: ctx.Config.Networking.APIServerAdditionalCertSANs,
+		Token:                       kubeadm.Token,
+		PodSubnet:                   ctx.Config.Networking.PodSubnet,
+		KubeProxyMode:               string(ctx.Config.Networking.KubeProxyMode),
+		ServiceSubnet:               ctx.Config.Networking.ServiceSubnet,
+		ControlPlane:                true,
+		IPFamily:                    ctx.Config.Networking.IPFamily,
+		FeatureGates:                ctx.Config.FeatureGates,
+		RuntimeConfig:               ctx.Config.RuntimeConfig,
+		RootlessProvider:            providerInfo.Rootless,
 	}
 
 	kubeadmConfigPlusPatches := func(node nodes.Node, data kubeadm.ConfigData) func() error {

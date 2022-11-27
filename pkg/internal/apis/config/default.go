@@ -60,6 +60,11 @@ func SetDefaultsCluster(obj *Cluster) {
 		}
 	}
 
+	//default to an empty list of additional cert SANs
+	if obj.Networking.APIServerAdditionalCertSANs == nil {
+		obj.Networking.APIServerAdditionalCertSANs = make([]string, 0)
+	}
+
 	// default the pod CIDR
 	if obj.Networking.PodSubnet == "" {
 		obj.Networking.PodSubnet = "10.244.0.0/16"

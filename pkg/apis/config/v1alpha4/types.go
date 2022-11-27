@@ -177,6 +177,10 @@ type Networking struct {
 	//
 	// Defaults to 127.0.0.1
 	APIServerAddress string `yaml:"apiServerAddress,omitempty" json:"apiServerAddress,omitempty"`
+	// Any additional certificate SANs that should be added to the API server certificate
+	//
+	// Defaults to []
+	APIServerAdditionalCertSANs []string `yaml:"apiServerAdditionalCertSANs,omitempty" json:"apiServerAdditionalCertSANs,omitempty"`
 	// PodSubnet is the CIDR used for pod IPs
 	// kind will select a default if unspecified
 	PodSubnet string `yaml:"podSubnet,omitempty" json:"podSubnet,omitempty"`

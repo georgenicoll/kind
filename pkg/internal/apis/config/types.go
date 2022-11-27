@@ -139,6 +139,11 @@ type Networking struct {
 	//
 	// Defaults to 127.0.0.1
 	APIServerAddress string
+	// APIServerAdditionalCertSANs is a list of additional cert SANs that will be added
+	// to the kubernetes api server certificate
+	//
+	// Defaults to []
+	APIServerAdditionalCertSANs []string
 	// PodSubnet is the CIDR used for pod IPs
 	// kind will select a default if unspecified
 	PodSubnet string
